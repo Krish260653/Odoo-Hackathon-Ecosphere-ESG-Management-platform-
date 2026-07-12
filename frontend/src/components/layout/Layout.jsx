@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
+import AICopilot from '../AICopilot';
 
 export const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -30,6 +31,9 @@ export const Layout = () => {
           <Outlet />
         </main>
       </div>
+
+      {/* ESG AI Copilot Widget */}
+      <AICopilot />
     </div>
   );
 };

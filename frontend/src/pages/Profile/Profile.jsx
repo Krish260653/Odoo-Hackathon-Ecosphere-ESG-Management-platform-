@@ -4,7 +4,6 @@ import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import { 
   User, 
-  Mail, 
   MapPin, 
   Shield, 
   Award, 
@@ -12,7 +11,6 @@ import {
   Lock, 
   Activity,
   Flame,
-  Zap,
   Star,
   FileText
 } from 'lucide-react';

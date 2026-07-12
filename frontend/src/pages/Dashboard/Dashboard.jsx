@@ -1,26 +1,14 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import Card from '../../components/common/Card';
 import Badge from '../../components/common/Badge';
 import {
-  LayoutDashboard,
-  Leaf,
-  Users,
-  Shield,
-  Trophy,
-  BarChart3,
-  Settings,
-  LogOut,
-  Bell,
-  Menu,
-  X,
   TrendingUp,
   TrendingDown,
   CheckCircle2,
   AlertTriangle,
   Award,
-  ChevronRight
+  ChevronRight,
+  Trophy
 } from 'lucide-react';
 import {
   ResponsiveContainer,

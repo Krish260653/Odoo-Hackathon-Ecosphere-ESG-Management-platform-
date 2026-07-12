@@ -7,6 +7,7 @@ import {
   Users,
   Shield,
   Trophy,
+  Target,
   BarChart3,
   Settings,
   LogOut
@@ -28,7 +29,7 @@ export const Sidebar = ({ isMobile, onClose }) => {
     { name: 'Environmental', path: '/environmental', icon: Leaf },
     { name: 'Social', path: '/social', icon: Users },
     { name: 'Governance', path: '/governance', icon: Shield },
-    { name: 'Challenges', path: '/challenges', icon: Trophy },
+    { name: 'Challenges', path: '/challenges', icon: Target },
     { name: 'Leaderboard', path: '/leaderboard', icon: Trophy },
     { name: 'Reports', path: '/reports', icon: BarChart3 },
     { name: 'Admin', path: '/admin', icon: Settings }
