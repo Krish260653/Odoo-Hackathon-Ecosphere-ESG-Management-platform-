@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Eye, EyeOff, Leaf } from 'lucide-react';
+import { Eye, EyeOff, Leaf, RefreshCw } from 'lucide-react';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 
@@ -11,10 +11,11 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('admin'); // 'admin' or 'employee'
   const [error, setError] = useState('');
-  const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     if (!email) {
       setError('Please enter your email address');
@@ -25,18 +26,27 @@ const Login = () => {
       return;
     }
     setError('');
-    login(role);
-    navigate('/dashboard');
+    setLoading(false);
+    
+    try {
+      setLoading(true);
+      await signIn(email, password);
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDemoSelect = (selectedRole) => {
     setRole(selectedRole);
     if (selectedRole === 'admin') {
       setEmail('admin@ecosphere.com');
-      setPassword('admin123');
+      setPassword('password123');
     } else {
       setEmail('employee@ecosphere.com');
-      setPassword('employee123');
+      setPassword('password123');
     }
   };
 
@@ -57,13 +67,13 @@ const Login = () => {
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-5">
           {error && (
-            <div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg p-3">
+            <div className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg p-3 text-left">
               {error}
             </div>
           )}
 
           {/* Email field */}
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 text-left">
             <label className="text-xs font-semibold text-[#1A1A1A] uppercase tracking-wider block">
               Email Address
             </label>
@@ -72,12 +82,13 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
-              className="w-full px-3.5 py-2 border border-[#EEEEEE] rounded-lg text-sm bg-white placeholder-[#B0B0B0] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]/20 focus:border-[#2D6A4F] transition-all"
+              disabled={loading}
+              className="w-full px-3.5 py-2 border border-[#EEEEEE] rounded-lg text-sm bg-white placeholder-[#B0B0B0] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]/20 focus:border-[#2D6A4F] transition-all disabled:opacity-60"
             />
           </div>
 
           {/* Password field */}
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 text-left">
             <div className="flex justify-between items-center">
               <label className="text-xs font-semibold text-[#1A1A1A] uppercase tracking-wider block">
                 Password
@@ -89,12 +100,14 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-3.5 pr-10 py-2 border border-[#EEEEEE] rounded-lg text-sm bg-white placeholder-[#B0B0B0] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]/20 focus:border-[#2D6A4F] transition-all"
+                disabled={loading}
+                className="w-full pl-3.5 pr-10 py-2 border border-[#EEEEEE] rounded-lg text-sm bg-white placeholder-[#B0B0B0] text-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-[#2D6A4F]/20 focus:border-[#2D6A4F] transition-all disabled:opacity-60"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A1A] focus:outline-none"
+                disabled={loading}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B7280] hover:text-[#1A1A1A] focus:outline-none disabled:opacity-50"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" strokeWidth={1.5} />
@@ -108,9 +121,11 @@ const Login = () => {
           {/* Login Button */}
           <Button
             type="submit"
-            className="w-full py-2.5"
+            className="w-full py-2.5 flex items-center justify-center gap-1.5"
+            disabled={loading}
           >
-            Login
+            {loading && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+            <span>{loading ? 'Logging in...' : 'Login'}</span>
           </Button>
         </form>
 
@@ -123,22 +138,24 @@ const Login = () => {
             <button
               type="button"
               onClick={() => handleDemoSelect('admin')}
+              disabled={loading}
               className={`py-1.5 px-3 text-xs font-medium rounded-md transition-all ${
                 role === 'admin'
                   ? 'bg-white text-[#2D6A4F] shadow-sm border border-[#EEEEEE]'
                   : 'text-[#6B7280] hover:text-[#1A1A1A]'
-              }`}
+              } disabled:opacity-50`}
             >
               Login as Admin
             </button>
             <button
               type="button"
               onClick={() => handleDemoSelect('employee')}
+              disabled={loading}
               className={`py-1.5 px-3 text-xs font-medium rounded-md transition-all ${
                 role === 'employee'
                   ? 'bg-white text-[#2D6A4F] shadow-sm border border-[#EEEEEE]'
                   : 'text-[#6B7280] hover:text-[#1A1A1A]'
-              }`}
+              } disabled:opacity-50`}
             >
               Login as Employee
             </button>
