@@ -1,5 +1,7 @@
 # EcoSphere: ESG Management Platform
 
+LIVE LINK - https://tangerine-dusk-70a19c.netlify.app
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/11947fe6-0673-4b19-b04c-ec2445b7c8d5/deploy-status)](https://tangerine-dusk-70a19c.netlify.app)
 [![React](https://img.shields.io/badge/React-18.x-blue.svg)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.x-646CFF.svg)](https://vitejs.dev/)
